@@ -15,7 +15,7 @@ public class Panel extends JPanel implements ActionListener{
 	static JTextField tf_Answer = null;
 	public JTextField ptcount=null;
 	public JTextField questionnum=null;
-	public int qnum=0;
+	public int qnum=1;
 	public int pt=0;
 	private JTextArea ta=null;
 	private Font quesFont=null;
@@ -44,12 +44,12 @@ public class Panel extends JPanel implements ActionListener{
 		north.setLayout(new BorderLayout());
 		north.setLayout(new BorderLayout());
 		ptcount=new JTextField(8);
-		questionnum=new JTextField(5);
-		ptcount.setText("Points:"+pt);
+		questionnum=new JTextField(4);
+		ptcount.setText("Points: "+pt);
 		questionnum.setText("Q# "+qnum);
 		t1=new Trivia("Who was the first president of the USA?","george washington",1);
 		t2=new Trivia("What is the capital of Morocco?","rabat",3);
-		t3=new Trivia("Diana Prince is the public persona of which fictional superhero?","wonder woman",5);
+		t3=new Trivia("Diana Prince is the persona of which superhero?","wonder woman",5);
 		t4=new Trivia("Who is Bruce Wayne's butler?","alfred pennyworth",3);
 		t5=new Trivia("What is the name of Mickey Mouse's Dog?","pluto",4);
 		j1=new JLabel(t1.getQuestion());
@@ -58,7 +58,7 @@ public class Panel extends JPanel implements ActionListener{
 		j4=new JLabel(t4.getQuestion());
 		j5=new JLabel(t5.getQuestion());
 		Font quesFont = j1.getFont().deriveFont(Font.PLAIN, 30f);
-		Font longquesFont=j1.getFont().deriveFont(Font.PLAIN,25f);
+		Font longquesFont=j1.getFont().deriveFont(Font.PLAIN,24f);
 		Font numFont=j1.getFont().deriveFont(Font.PLAIN,23f);
 		ptcount.setBackground(Color.LIGHT_GRAY);
 		questionnum.setBackground(Color.lightGray);
@@ -68,7 +68,7 @@ public class Panel extends JPanel implements ActionListener{
 		j2.setFont(quesFont);
 		j3.setFont(longquesFont);
 		j4.setFont(quesFont);
-		j5.setFont(quesFont);
+		j5.setFont(longquesFont);
 		cards.setLayout(new CardLayout());
         JPanel card1 = new JPanel();
         card1.add(j1);
@@ -137,10 +137,18 @@ public class Panel extends JPanel implements ActionListener{
 	{
 		if(Trivia.rightanswer==true)
 		{
-			pt++;
+			if(qnum==5)
+			{
+				tf_Answer.setText("   Congratulations, You got "+pt+"point(s)");
+			}
+			else{
+			pt+=tset[qnum].getPoints();
 			cardLayout.next(cards);
 			qnum++;
 			tf_Answer.setText("");
+			ptcount.setText("points: "+pt);
+			questionnum.setText("Q# "+qnum);
+			}
 		} 
 		
 	}
