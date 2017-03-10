@@ -49,9 +49,10 @@ public class Panel extends JPanel implements ActionListener{
 		j4=new JLabel(t4.getQuestion());
 		j5=new JLabel(t5.getQuestion());
 		Font quesFont = j1.getFont().deriveFont(Font.PLAIN, 30f);
+		Font longquesFont=j1.getFont().deriveFont(Font.PLAIN,25f);
 		j1.setFont(quesFont);
 		j2.setFont(quesFont);
-		j3.setFont(quesFont);
+		j3.setFont(longquesFont);
 		j4.setFont(quesFont);
 		j5.setFont(quesFont);
 		cards.setLayout(new CardLayout());
@@ -66,6 +67,12 @@ public class Panel extends JPanel implements ActionListener{
         JPanel card5 = new JPanel();
         card5.add(j5);
 		this.setBackground(Color.darkGray);
+		tset[0]=t1;
+		tset[1]=t2;
+		tset[2]=t3;
+		tset[3]=t4;
+		tset[4]=t5;
+		
 		btn = new JButton("Submit Answer");
 		btn.setFont(quesFont);
 		btn.addActionListener(this); // If the button is clicked, the action performed is in this panel.
@@ -81,7 +88,7 @@ public class Panel extends JPanel implements ActionListener{
 		cards.add(card3,"Card3");
 		cards.add(card4,"Card4");
 		cards.add(card5,"Card5");
-		CardLayout cardLayout = (CardLayout) cards.getLayout();
+		 cardLayout = (CardLayout) cards.getLayout();
 		
 	}
 
@@ -113,8 +120,9 @@ public class Panel extends JPanel implements ActionListener{
 	{
 		if(Trivia.rightanswer==true)
 		{
-			System.out.println("Good job");
-			cardLayout.last(cards);
+			
+			cardLayout.next(cards);
+			tf_Answer.setText("");
 		} 
 		
 	}

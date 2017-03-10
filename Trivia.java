@@ -89,24 +89,23 @@ public class Trivia  implements Serializable
 			return false;
 		return true;
 	}
-	public static boolean Checkanswer()
+	public static void Checkanswer()
 	{
 		if(Panel.btnclicked==true)
 		{
-			
-			System.out.println("Over here");
-			if(Panel.getText().equals("george washington"))
-			{	
-				rightanswer=true;
-				Panel.setcount();
-				return true;
-			}
-			
-			else return false;
-			
+			String y=Panel.getText().toLowerCase();
+				if(y.equals(Panel.tset[0].getAnswer())||y.equals(Panel.tset[1].getAnswer())
+						||y.equals(Panel.tset[2].getAnswer())||y.equals(Panel.tset[3].getAnswer())
+						||y.equals(Panel.tset[4].getAnswer()))
+				{
+					
+					rightanswer=true;
+					Panel.setcount();
+				}
+				
 		}
 	
-		else return false;
+
 	}
 
 	public int calcPoints()
