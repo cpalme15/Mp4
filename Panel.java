@@ -139,7 +139,9 @@ public class Panel extends JPanel implements ActionListener{
 		{
 			if(qnum==5)
 			{
-				tf_Answer.setText("   Congratulations, You got "+pt+"point(s)");
+				tf_Answer.setText("   Thank you for playing, You got "+pt+"point(s)");
+				tf_Answer.setEditable(false);
+				btn.setEnabled(false);
 			}
 			else{
 			pt+=tset[qnum].getPoints();
