@@ -1,19 +1,20 @@
 import java.io.*;
 import java.util.*;
 
-public class Trivia extends Panel implements Serializable
+public class Trivia  implements Serializable
 {
 	private String question;
 	private String answer;
 	private int points;
+	protected static boolean rightanswer=false;
 	
 	
 	public Trivia()
 	{
 		
-	question="?";
-	answer="";
-	points=0;
+	this.question="?";
+	this.answer="";
+	this.points=0;
 		
 }
 
@@ -88,19 +89,19 @@ public class Trivia extends Panel implements Serializable
 			return false;
 		return true;
 	}
-	public boolean Checkanswer()
+	public static boolean Checkanswer()
 	{
-		if(btnclicked==true)
+		if(Panel.btnclicked==true)
 		{
-			if(tf_Answer.getText()==tset[0].getAnswer()||tf_Answer.getText()==tset[1].getAnswer()||
-					tf_Answer.getText()==tset[2].getAnswer()||tf_Answer.getText()==tset[3].getAnswer()||
-					tf_Answer.getText()==tset[4].getAnswer())
-			{
-				System.out.println(true);
-				setcount();
+			
+			System.out.println("Over here");
+			if(Panel.getText().equals("george washington"))
+			{	
+				rightanswer=true;
+				Panel.setcount();
 				return true;
-				
 			}
+			
 			else return false;
 			
 		}

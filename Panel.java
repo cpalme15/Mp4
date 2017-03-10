@@ -12,7 +12,7 @@ public class Panel extends JPanel implements ActionListener{
 	 */
 	private static final long serialVersionUID = -1085549162291721622L;
 	private JButton btn = null;
-	public JTextField tf_Answer = null;
+	static JTextField tf_Answer = null;
 	private JTextArea ta=null;
 	private Font quesFont=null;
 	private Trivia t1=null;
@@ -26,19 +26,19 @@ public class Panel extends JPanel implements ActionListener{
 	private JLabel j4=null;
 	private JLabel j5=null;
 	private JPanel north=null;
-	private int count=0;
-	protected Trivia [] tset=new Trivia[5];
-	protected boolean btnclicked=false;
+	private static int count=0;
+	static Trivia [] tset=new Trivia[5];
+	static boolean btnclicked=false;
+	CardLayout cardLayout =null;
     JPanel cards; //a panel that uses CardLayout
 	public Panel(){
 		super();
-		
         //Create the "cards".
 		cards=new JPanel();
 		tf_Answer=new JTextField(20);
 		north=new JPanel();
 		north.setLayout(new BorderLayout());
-		t1=new Trivia("Who is the first president of the USA?","george washington",1);
+		t1=new Trivia("Who was the first president of the USA?","george washington",1);
 		t2=new Trivia("What is the capital of Morocco?","rabat",3);
 		t3=new Trivia("Diana Prince is the public persona of which fictional superhero?","wonder woman",5);
 		t4=new Trivia("Who is Bruce Wayne's butler?","alfred pennyworth",3);
@@ -49,8 +49,11 @@ public class Panel extends JPanel implements ActionListener{
 		j4=new JLabel(t4.getQuestion());
 		j5=new JLabel(t5.getQuestion());
 		Font quesFont = j1.getFont().deriveFont(Font.PLAIN, 30f);
-	
-		
+		j1.setFont(quesFont);
+		j2.setFont(quesFont);
+		j3.setFont(quesFont);
+		j4.setFont(quesFont);
+		j5.setFont(quesFont);
 		cards.setLayout(new CardLayout());
         JPanel card1 = new JPanel();
         card1.add(j1);
@@ -73,35 +76,48 @@ public class Panel extends JPanel implements ActionListener{
 		this.add(btn, BorderLayout.SOUTH);
 		this.add(tf_Answer, BorderLayout.CENTER);
 		this.add(cards,BorderLayout.NORTH);
-		cards.add(card1);
-		cards.add(card2);
-		cards.add(card3);
-		cards.add(card4);
-		cards.add(card5);
+		cards.add(card1,"Card1");
+		cards.add(card2,"Card2");
+		cards.add(card3,"Card3");
+		cards.add(card4,"Card4");
+		cards.add(card5,"Card5");
+		CardLayout cardLayout = (CardLayout) cards.getLayout();
 		
 	}
 
-	public String getText()
+	public static String getText()
 	{
 		String x=tf_Answer.getText();
 		return x;
 	}
-	public  void setcount()
+	public static void setcount()
 	{
 		 count++;
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equalsIgnoreCase("Default")){
 			String x=e.getActionCommand();
 			switch(x)
 			{
-			case "Submit Answer": getText(); btnclicked=true ;t1.Checkanswer(); break;
+			case "Submit Answer": 
+				getText(); 
+				btnclicked=true ;
+				Trivia.Checkanswer(); 
+				switchques();
+				break;
 			}
-		}
+		
 		
 	}
-
+	public void switchques()
+	{
+		if(Trivia.rightanswer==true)
+		{
+			System.out.println("Good job");
+			cardLayout.last(cards);
+		} 
+		
+	}
 	private class myHelper extends MouseAdapter{ // useful if you only want one method from mouse listener, can extend
 		public void mouseEntered(MouseEvent e) {
 
