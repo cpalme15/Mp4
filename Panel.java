@@ -144,7 +144,7 @@ public class Panel extends JPanel implements ActionListener{
 				btn.setEnabled(false);
 			}
 			else{
-			pt+=tset[qnum].getPoints();
+			pt+=tset[qnum-1].getPoints();
 			cardLayout.next(cards);
 			qnum++;
 			tf_Answer.setText("");
