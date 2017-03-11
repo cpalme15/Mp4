@@ -144,9 +144,12 @@ public class Panel extends JPanel implements ActionListener{
 		{
 			if(qnum==5)
 			{
+				pt+=tset[qnum-1].getPoints();
+				ptcount.setText("points: "+pt);
 				tf_Answer.setText("   Thank you for playing, You got "+pt+"point(s)");
 				tf_Answer.setEditable(false);
 				btn.setEnabled(false);
+				
 			}
 			else{
 			pt+=tset[qnum-1].getPoints();
@@ -158,6 +161,25 @@ public class Panel extends JPanel implements ActionListener{
 			Trivia.rightanswer=false;
 			}
 		} 
+		else
+		{
+			if(qnum==5)
+			{
+				ptcount.setText("points: "+pt);
+				tf_Answer.setText("   Thank you for playing, You got "+pt+"point(s)");
+				tf_Answer.setEditable(false);
+				btn.setEnabled(false);
+			}
+			else
+			{
+			cardLayout.next(cards);
+			qnum++;
+			tf_Answer.setText("");
+			ptcount.setText("points: "+pt);
+			questionnum.setText("Q# "+qnum);
+			Trivia.rightanswer=false;
+			}
+		}
 		
 	}
 	private class myHelper extends MouseAdapter{ // useful if you only want one method from mouse listener, can extend

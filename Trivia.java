@@ -7,16 +7,16 @@ public class Trivia  implements Serializable
 	private String answer;
 	private int points;
 	protected static boolean rightanswer=false;
-	
-	
+
+
 	public Trivia()
 	{
-		
-	this.question="?";
-	this.answer="";
-	this.points=0;
-		
-}
+
+		this.question="?";
+		this.answer="";
+		this.points=0;
+
+	}
 
 	public Trivia(String x, String y, int z)
 	{
@@ -94,18 +94,15 @@ public class Trivia  implements Serializable
 		if(Panel.btnclicked==true)
 		{
 			String y=Panel.getText().toLowerCase();
-				if(y.equals(Panel.rset[0].getAnswer())||y.equals(Panel.rset[1].getAnswer())
-						||y.equals(Panel.rset[2].getAnswer())||y.equals(Panel.rset[3].getAnswer())
-						||y.equals(Panel.rset[4].getAnswer()))
+			for(int i=0;i<Panel.rset.length;i++)
+			{
+				if(y.equals(Panel.rset[i].getAnswer()))
 				{
-					
 					rightanswer=true;
 					Panel.setcount();
 				}
-				
-		}
-	
-
+			}	
+		}		
 	}
 
 	public int calcPoints()
