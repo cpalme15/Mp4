@@ -94,9 +94,9 @@ public class Trivia  implements Serializable
 		if(Panel.btnclicked==true)
 		{
 			String y=Panel.getText().toLowerCase();
-				if(y.equals(Panel.tset[0].getAnswer())||y.equals(Panel.tset[1].getAnswer())
-						||y.equals(Panel.tset[2].getAnswer())||y.equals(Panel.tset[3].getAnswer())
-						||y.equals(Panel.tset[4].getAnswer()))
+				if(y.equals(Panel.rset[0].getAnswer())||y.equals(Panel.rset[1].getAnswer())
+						||y.equals(Panel.rset[2].getAnswer())||y.equals(Panel.rset[3].getAnswer())
+						||y.equals(Panel.rset[4].getAnswer()))
 				{
 					
 					rightanswer=true;

@@ -1,37 +1,25 @@
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
+import java.awt.event.*;
+import java.io.*;
 import javax.swing.*;
-
 public class Panel extends JPanel implements ActionListener{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1085549162291721622L;
 	private JButton btn = null;
-	static JTextField tf_Answer = null;
-	public JTextField ptcount=null;
-	public JTextField questionnum=null;
-	public int qnum=1;
-	public int pt=0;
+	static JTextField tf_Answer = null, ptcount=null,questionnum=null;
+	public int qnum=1,pt=0;
 	private JTextArea ta=null;
 	private Font quesFont=null;
-	private Trivia t1=null;
-	private Trivia t2=null;
-	private Trivia t3=null;
-	private Trivia t4=null;
-	private Trivia t5=null;
-	private JLabel j1=null;
-	private JLabel j2=null;
-	private JLabel j3=null;
-	private JLabel j4=null;
-	private JLabel j5=null;
+	private Trivia t1=null,t2=null,t3=null,t4=null,t5=null;
+	private JLabel j1=null,j2=null,j3=null,j4=null,j5=null;
 	private JPanel north=null;
 	private static int count=0;
 	static Trivia [] tset=new Trivia[5];
+	ObjectOutputStream oos=null;
+	ObjectInputStream ois=null;
+	static Trivia[]rset=new Trivia[5];	
 	static boolean btnclicked=false;
 	CardLayout cardLayout =null;
     JPanel cards; //a panel that uses CardLayout
@@ -86,7 +74,24 @@ public class Panel extends JPanel implements ActionListener{
 		tset[2]=t3;
 		tset[3]=t4;
 		tset[4]=t5;
-		
+		try {
+			oos=new ObjectOutputStream(new FileOutputStream("Questions.dat"));
+			for(int i=0;i<tset.length;i++){
+			oos.writeObject(tset[i]);}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			ois=new ObjectInputStream(new FileInputStream("Questions.dat"));
+			for(int i=0;i<tset.length;i++)
+			{
+			rset[i]=(Trivia) ois.readObject();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 		btn = new JButton("Submit Answer");
 		btn.setFont(quesFont);
 		btn.addActionListener(this); // If the button is clicked, the action performed is in this panel.
@@ -105,7 +110,7 @@ public class Panel extends JPanel implements ActionListener{
 		cards.add(card3,"Card3");
 		cards.add(card4,"Card4");
 		cards.add(card5,"Card5");
-		 cardLayout = (CardLayout) cards.getLayout();
+		cardLayout = (CardLayout) cards.getLayout();
 		
 	}
 
@@ -150,6 +155,7 @@ public class Panel extends JPanel implements ActionListener{
 			tf_Answer.setText("");
 			ptcount.setText("points: "+pt);
 			questionnum.setText("Q# "+qnum);
+			Trivia.rightanswer=false;
 			}
 		} 
 		
