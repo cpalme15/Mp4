@@ -8,7 +8,7 @@ public class Panel extends JPanel implements ActionListener{
 	 */
 	private static final long serialVersionUID = -1085549162291721622L;
 	private static JButton subbtn = null;
-	private JButton nexbtn=null;
+	private static JButton nexbtn=null;
 	static JTextField tf_Answer = null, ptcount=null,questionnum=null;
 	public static int qnum=1;
 	public static int pt=0;
@@ -215,6 +215,7 @@ public class Panel extends JPanel implements ActionListener{
 					tf_Answer.setText("   Thank you for playing, You got "+pt+"point(s)");
 					tf_Answer.setEditable(false);
 					subbtn.setEnabled(false);
+					nexbtn.setEnabled(false);
 					sbtnclicked=false;
 					nbtnclicked=false;
 				}
