@@ -91,7 +91,7 @@ public class Trivia  implements Serializable
 	}
 	public static void Checkanswer()
 	{
-		if(Panel.btnclicked==true)
+		if(Panel.sbtnclicked==true)
 		{
 			String y=Panel.getText().toLowerCase();
 			for(int i=0;i<Panel.rset.length;i++)

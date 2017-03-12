@@ -7,9 +7,11 @@ public class Panel extends JPanel implements ActionListener{
 	 * 
 	 */
 	private static final long serialVersionUID = -1085549162291721622L;
-	private JButton btn = null;
+	private static JButton subbtn = null;
+	private JButton nexbtn=null;
 	static JTextField tf_Answer = null, ptcount=null,questionnum=null;
-	public int qnum=1,pt=0;
+	public static int qnum=1;
+	public static int pt=0;
 	private JTextArea ta=null;
 	private Font quesFont=null;
 	private Trivia t1=null,t2=null,t3=null,t4=null,t5=null;
@@ -20,13 +22,18 @@ public class Panel extends JPanel implements ActionListener{
 	ObjectOutputStream oos=null;
 	ObjectInputStream ois=null;
 	static Trivia[]rset=new Trivia[5];	
-	static boolean btnclicked=false;
-	CardLayout cardLayout =null;
-    JPanel cards; //a panel that uses CardLayout
+	static boolean sbtnclicked=false,
+	nbtnclicked=false;
+	static JPanel btns;
+	static CardLayout cardLayout =null;
+	static CardLayout cardLayout2=null;
+	static JPanel cards; //a panel that uses CardLayout
 	public Panel(){
 		super();
-        //Create the "cards".
+		//Create the "cards".
 		cards=new JPanel();
+		btns=new JPanel();
+
 		tf_Answer=new JTextField(20);
 		north=new JPanel();
 		north.setLayout(new BorderLayout());
@@ -50,24 +57,25 @@ public class Panel extends JPanel implements ActionListener{
 		Font numFont=j1.getFont().deriveFont(Font.PLAIN,23f);
 		ptcount.setBackground(Color.LIGHT_GRAY);
 		questionnum.setBackground(Color.lightGray);
-	    ptcount.setFont(numFont);
-	    questionnum.setFont(numFont);
+		ptcount.setFont(numFont);
+		questionnum.setFont(numFont);
 		j1.setFont(quesFont);
 		j2.setFont(quesFont);
 		j3.setFont(longquesFont);
 		j4.setFont(quesFont);
 		j5.setFont(longquesFont);
 		cards.setLayout(new CardLayout());
-        JPanel card1 = new JPanel();
-        card1.add(j1);
-        JPanel card2 = new JPanel();
-        card2.add(j2);
-        JPanel card3 = new JPanel();
-        card3.add(j3);
-        JPanel card4 = new JPanel();
-        card4.add(j4);
-        JPanel card5 = new JPanel();
-        card5.add(j5);
+		btns.setLayout(new CardLayout());
+		JPanel card1 = new JPanel();
+		card1.add(j1);
+		JPanel card2 = new JPanel();
+		card2.add(j2);
+		JPanel card3 = new JPanel();
+		card3.add(j3);
+		JPanel card4 = new JPanel();
+		card4.add(j4);
+		JPanel card5 = new JPanel();
+		card5.add(j5);
 		this.setBackground(Color.darkGray);
 		tset[0]=t1;
 		tset[1]=t2;
@@ -77,7 +85,7 @@ public class Panel extends JPanel implements ActionListener{
 		try {
 			oos=new ObjectOutputStream(new FileOutputStream("Questions.dat"));
 			for(int i=0;i<tset.length;i++){
-			oos.writeObject(tset[i]);}
+				oos.writeObject(tset[i]);}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -85,21 +93,25 @@ public class Panel extends JPanel implements ActionListener{
 			ois=new ObjectInputStream(new FileInputStream("Questions.dat"));
 			for(int i=0;i<tset.length;i++)
 			{
-			rset[i]=(Trivia) ois.readObject();
+				rset[i]=(Trivia) ois.readObject();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		btn = new JButton("Submit Answer");
-		btn.setFont(quesFont);
-		btn.addActionListener(this); // If the button is clicked, the action performed is in this panel.
+		subbtn = new JButton("Submit Answer");
+		subbtn.setFont(quesFont);
+		subbtn.addActionListener(this);
+		nexbtn = new JButton("Next Question");
+		nexbtn.setFont(quesFont);
+		nexbtn.addActionListener(this);
+		// If the button is clicked, the action performed is in this panel.
 		tf_Answer.setFont(quesFont);
 		this.addMouseListener(new myHelper());
 		this.setFocusable(true);
 		this.setLayout(new BorderLayout());
-		this.add(btn, BorderLayout.SOUTH);
+		this.add(btns, BorderLayout.SOUTH);
 		this.add(north,BorderLayout.NORTH);
 		this.add(tf_Answer, BorderLayout.CENTER);
 		north.add(cards,BorderLayout.CENTER);
@@ -110,8 +122,17 @@ public class Panel extends JPanel implements ActionListener{
 		cards.add(card3,"Card3");
 		cards.add(card4,"Card4");
 		cards.add(card5,"Card5");
+		JPanel btn1=new JPanel();
+		btn1.add(subbtn);
+		JPanel btn2=new JPanel();
+		btn2.add(nexbtn);
+
+		btns.add(btn1,"btn1");
+		btns.add(btn2,"btn2");
+
 		cardLayout = (CardLayout) cards.getLayout();
-		
+		cardLayout2=(CardLayout)btns.getLayout();
+
 	}
 
 	public static String getText()
@@ -121,22 +142,28 @@ public class Panel extends JPanel implements ActionListener{
 	}
 	public static void setcount()
 	{
-		 count++;
+		count++;
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-			String x=e.getActionCommand();
-			switch(x)
-			{
-			case "Submit Answer": 
-				getText(); 
-				btnclicked=true ;
-				Trivia.Checkanswer(); 
-				switchques();
-				break;
-			}
-		
-		
+		String x=e.getActionCommand();
+		switch(x)
+		{
+		case "Submit Answer": 
+			getText(); 
+			sbtnclicked=true ;
+			Trivia.Checkanswer(); 
+			switchques();
+			
+			
+			break;
+		case "Next Question":
+			nbtnclicked=true;
+			wqueswap();
+			break;
+		}
+
+
 	}
 	public void switchques()
 	{
@@ -148,39 +175,64 @@ public class Panel extends JPanel implements ActionListener{
 				ptcount.setText("points: "+pt);
 				tf_Answer.setText("   Thank you for playing, You got "+pt+"point(s)");
 				tf_Answer.setEditable(false);
-				btn.setEnabled(false);
-				
+				subbtn.setEnabled(false);
+				sbtnclicked=false;
+				nbtnclicked=false;
+
 			}
 			else{
-			pt+=tset[qnum-1].getPoints();
-			cardLayout.next(cards);
-			qnum++;
-			tf_Answer.setText("");
-			ptcount.setText("points: "+pt);
-			questionnum.setText("Q# "+qnum);
-			Trivia.rightanswer=false;
+				pt+=tset[qnum-1].getPoints();
+				cardLayout.next(cards);
+				qnum++;
+				tf_Answer.setText("");
+				ptcount.setText("points: "+pt);
+				questionnum.setText("Q# "+qnum);
+				Trivia.rightanswer=false;
+				sbtnclicked=false;
+				nbtnclicked=false;
 			}
 		} 
 		else
 		{
-			if(qnum==5)
-			{
-				ptcount.setText("points: "+pt);
-				tf_Answer.setText("   Thank you for playing, You got "+pt+"point(s)");
-				tf_Answer.setEditable(false);
-				btn.setEnabled(false);
-			}
-			else
-			{
-			cardLayout.next(cards);
-			qnum++;
-			tf_Answer.setText("");
-			ptcount.setText("points: "+pt);
-			questionnum.setText("Q# "+qnum);
+			
+			cardLayout2.next(btns);
+			tf_Answer.setText("Sorry, but the answer was : "+rset[qnum-1].getAnswer().toUpperCase());
 			Trivia.rightanswer=false;
-			}
+			
 		}
-		
+
+	}
+	public static void wqueswap()
+	{
+			if(nbtnclicked=true)
+			{
+				
+				
+				if(qnum==5)
+				{
+					System.out.println("Here 2");
+					ptcount.setText("points: "+pt);
+					tf_Answer.setText("   Thank you for playing, You got "+pt+"point(s)");
+					tf_Answer.setEditable(false);
+					subbtn.setEnabled(false);
+					sbtnclicked=false;
+					nbtnclicked=false;
+				}
+			else
+				{
+				System.out.println("HEre 3");
+				cardLayout.next(cards);
+				cardLayout2.next(btns);
+				qnum++;
+				tf_Answer.setText("");
+				ptcount.setText("points: "+pt);
+				questionnum.setText("Q# "+qnum);
+				Trivia.rightanswer=false;
+				sbtnclicked=false;
+				nbtnclicked=false;
+				}
+			}
+			
 	}
 	private class myHelper extends MouseAdapter{ // useful if you only want one method from mouse listener, can extend
 		public void mouseEntered(MouseEvent e) {
@@ -190,7 +242,7 @@ public class Panel extends JPanel implements ActionListener{
 		public void mouseExited(MouseEvent e) {
 
 		}
-		
+
 		public void mouseClicked(MouseEvent e){
 
 		}
